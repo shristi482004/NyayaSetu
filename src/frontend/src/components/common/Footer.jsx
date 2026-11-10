@@ -1,0 +1,122 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { NyayaSetuLogo, ArrowUpRightBadge } from './BrandGraphics';
+
+export const Footer = () => {
+  return (
+    <footer className="bg-midnight-900 text-white pt-20 pb-12 border-t border-slate-800 w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Top Branding & Navigation Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-slate-800">
+          {/* Left Column: NyayaSetu Brand Logo & Platform Description */}
+          <div className="lg:col-span-6 space-y-5">
+            <Link to="/" className="inline-block focus:outline-none" title="NyayaSetu Home">
+              <NyayaSetuLogo variant="dark" size="lg" />
+            </Link>
+            <p className="text-sm font-sans text-slate-300 leading-relaxed max-w-md pt-1">
+              Prestigious legal document intelligence platform. Transforming impenetrable legalese, statutory citations, and procedural complexity into structured, document-grounded clarity.
+            </p>
+            <div className="pt-2">
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-midnight-900 text-xs font-semibold uppercase tracking-wider hover:bg-pale-200 transition-colors shadow-subtle group"
+              >
+                <span>Analyze a Document</span>
+                <ArrowUpRightBadge className="w-3.5 h-3.5 text-midnight-900" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Right Columns: Three Clean Navigation Groups */}
+          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-3 gap-8">
+            {/* Column 1: Capabilities */}
+            <div className="space-y-3">
+              <h4 className="text-xs uppercase tracking-[0.2em] font-sans font-bold text-white">
+                Capabilities
+              </h4>
+              <ul className="space-y-2.5 text-xs text-slate-300">
+                <li>
+                  <a href="#capabilities" className="hover:text-white transition-colors">
+                    Plain Summaries
+                  </a>
+                </li>
+                <li>
+                  <a href="#capabilities" className="hover:text-white transition-colors">
+                    Procedural Flowcharts
+                  </a>
+                </li>
+                <li>
+                  <a href="#capabilities" className="hover:text-white transition-colors">
+                    Legal Timelines
+                  </a>
+                </li>
+                <li>
+                  <a href="#capabilities" className="hover:text-white transition-colors">
+                    Grounded AI Chat
+                  </a>
+                </li>
+                <li>
+                  <a href="#capabilities" className="hover:text-white transition-colors">
+                    Argument Mapping
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 2: Platform & Security */}
+            <div className="space-y-3">
+              <h4 className="text-xs uppercase tracking-[0.2em] font-sans font-bold text-white">
+                Platform & Trust
+              </h4>
+              <ul className="space-y-2.5 text-xs text-slate-300">
+                <li>Tenant Document Isolation</li>
+                <li>Zero AI Model Training</li>
+                <li>PyMuPDF + Tesseract OCR</li>
+                <li>Prompt Injection Defenses</li>
+                <li>Deterministic Citations</li>
+              </ul>
+            </div>
+
+            {/* Column 3: Supported Documents */}
+            <div className="space-y-3">
+              <h4 className="text-xs uppercase tracking-[0.2em] font-sans font-bold text-white">
+                Document Scope
+              </h4>
+              <ul className="space-y-2.5 text-xs text-slate-300">
+                <li>Court Judgments & Orders</li>
+                <li>Commercial Agreements</li>
+                <li>Demand & Default Notices</li>
+                <li>Lease & Tenancy Deeds</li>
+                <li>Writ Petitions & Pleadings</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Mandatory Legal Disclaimer Container */}
+        <div className="my-10 p-6 rounded-xl bg-slate-900 border border-slate-800 text-xs leading-relaxed text-slate-200 font-sans">
+          <div className="flex flex-col sm:flex-row sm:items-start gap-3">
+            <span className="font-bold text-gold-400 uppercase tracking-widest text-[11px] shrink-0">
+              Mandatory Legal Disclaimer:
+            </span>
+            <p className="text-slate-300 leading-relaxed">
+              NyayaSetu provides informational document intelligence and comprehension assistance only. All summaries, procedural timelines, flowcharts, argument maps, and conversational answers generated by this platform are designed for educational reference and do not constitute professional legal advice, formal attorney representation, or an attorney-client relationship. NyayaSetu is not a law firm. Users must consult an enrolled advocate or qualified legal practitioner for binding counsel regarding specific legal disputes, contractual obligations, or court proceedings.
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Metadata & Copyright Line */}
+        <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-sans">
+          <p>&copy; {new Date().getFullYear()} NyayaSetu Platform. All rights reserved.</p>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-4 gap-y-2 text-[11px]">
+            <span>Deterministic Grounding</span>
+            <span className="hidden sm:inline">•</span>
+            <span>Cryptographic Tenant Isolation</span>
+            <span className="hidden sm:inline">•</span>
+            <span>Zero Speculation Defense</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};

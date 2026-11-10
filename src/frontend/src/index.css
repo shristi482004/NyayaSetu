@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-navbar-bg: #010811;
+  --color-navbar-border: rgba(255, 255, 255, 0.08);
+  /* Navbar height for scroll-margin compensation */
+  --navbar-height: 5.5rem;
+}
+
+/* Prevent sticky navbar from obscuring anchor-linked section headings */
+section[id] {
+  scroll-margin-top: var(--navbar-height);
+}
+
+@layer base {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #FFFFFF;
+    color: #1E293B;
+  }
+}
+
+/* Classical Architectural Drafting Grid Utilities */
+.bg-grid-navy {
+  background-size: 56px 56px;
+  background-image: 
+    linear-gradient(to right, rgba(130, 147, 168, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(130, 147, 168, 0.07) 1px, transparent 1px);
+}
+
+.bg-grid-light {
+  background-size: 56px 56px;
+  background-image: 
+    linear-gradient(to right, rgba(38, 59, 86, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(38, 59, 86, 0.035) 1px, transparent 1px);
+}
+
+/* Radial edge fade mask */
+.grid-fade-mask {
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 80%);
+  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 80%);
+}
+
+/* Discreet minimal scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #071426;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #263B56;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8293A8;
+}
