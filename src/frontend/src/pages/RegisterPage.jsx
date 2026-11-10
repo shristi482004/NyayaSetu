@@ -54,8 +54,8 @@ export const RegisterPage = () => {
           res.data.user.role === 'admin'
             ? '/admin'
             : res.data.user.role === 'lawyer'
-            ? '/lawyer'
-            : '/dashboard';
+              ? '/lawyer'
+              : '/dashboard';
         navigate(destination, { replace: true });
       } else {
         setError(res.message || 'Registration failed. Please review your input.');
@@ -76,7 +76,7 @@ export const RegisterPage = () => {
       {/* Top Bar Navigation */}
       <div className="max-w-5xl w-full mx-auto flex items-center justify-between pb-6">
         <Link to="/" className="focus:outline-none" title="NyayaSetu Home">
-          <NyayaSetuLogo variant="light" size="sm" />
+          <NyayaSetuLogo variant="light" size="navbar" />
         </Link>
         <Link
           to="/"
@@ -161,22 +161,20 @@ export const RegisterPage = () => {
                   <button
                     type="button"
                     onClick={() => setRole('citizen')}
-                    className={`py-1.5 sm:py-2 px-1 sm:px-2 rounded-md text-[11px] sm:text-xs font-sans font-bold transition-all ${
-                      role === 'citizen'
+                    className={`py-1.5 sm:py-2 px-1 sm:px-2 rounded-md text-[11px] sm:text-xs font-sans font-bold transition-all ${role === 'citizen'
                         ? 'bg-midnight-900 text-white shadow-sm'
                         : 'text-slate-600 hover:text-midnight-900 hover:bg-white/60'
-                    }`}
+                      }`}
                   >
                     Citizen
                   </button>
                   <button
                     type="button"
                     onClick={() => setRole('lawyer')}
-                    className={`py-1.5 sm:py-2 px-1 sm:px-2 rounded-md text-[11px] sm:text-xs font-sans font-bold transition-all ${
-                      role === 'lawyer'
+                    className={`py-1.5 sm:py-2 px-1 sm:px-2 rounded-md text-[11px] sm:text-xs font-sans font-bold transition-all ${role === 'lawyer'
                         ? 'bg-midnight-900 text-white shadow-sm'
                         : 'text-slate-600 hover:text-midnight-900 hover:bg-white/60'
-                    }`}
+                      }`}
                   >
                     Lawyer
                   </button>
