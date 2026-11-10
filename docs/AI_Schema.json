@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NyayaSetuAnalysisResult",
+  "type": "object",
+  "required": ["summary", "disclaimer"],
+  "properties": {
+    "summary": {
+      "type": "object",
+      "required": ["disputeType", "keyParties", "factualBackground", "legalIssues", "rulingsOrObligations", "plainLanguageSummary"],
+      "properties": {
+        "disputeType": { "type": "string" },
+        "keyParties": { "type": "array", "items": { "type": "string" } },
+        "factualBackground": { "type": "array", "items": { "type": "string" } },
+        "legalIssues": { "type": "array", "items": { "type": "string" } },
+        "rulingsOrObligations": { "type": "array", "items": { "type": "string" } },
+        "plainLanguageSummary": { "type": "string" }
+      }
+    },
+    "faqs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["question", "answer"],
+        "properties": {
+          "question": { "type": "string" },
+          "answer": { "type": "string" },
+          "relevantClauseOrPage": { "type": "string" }
+        }
+      }
+    },
+    "timeline": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date", "event"],
+        "properties": {
+          "date": { "type": "string" },
+          "event": { "type": "string" },
+          "sourcePage": { "type": "integer" }
+        }
+      }
+    },
+    "flowchart": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["stepNumber", "stageName", "description"],
+        "properties": {
+          "stepNumber": { "type": "integer" },
+          "stageName": { "type": "string" },
+          "description": { "type": "string" },
+          "actionRequired": { "type": "string" },
+          "deadlineOrTimeframe": { "type": "string" }
+        }
+      }
+    },
+    "arguments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim", "evidenceOrBasis"],
+        "properties": {
+          "claim": { "type": "string" },
+          "evidenceOrBasis": { "type": "string" },
+          "counterArgument": { "type": "string" }
+        }
+      }
+    },
+    "actionItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["priority", "action", "responsibleParty"],
+        "properties": {
+          "priority": { "type": "string", "enum": ["High", "Medium", "Low"] },
+          "action": { "type": "string" },
+          "responsibleParty": { "type": "string" },
+          "deadline": { "type": "string" }
+        }
+      }
+    },
+    "disclaimer": {
+      "type": "string"
+    }
+  }
+}
+

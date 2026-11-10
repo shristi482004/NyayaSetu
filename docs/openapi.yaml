@@ -1,0 +1,213 @@
+openapi: 3.0.3
+info:
+  title: NyayaSetu API
+  description: AI-Powered Legal Document Intelligence Platform API
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+    description: Local Development Server
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password]
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                role:
+                  type: string
+                  enum: [citizen, lawyer]
+      responses:
+        '201':
+          description: User created
+        '400':
+          description: Validation error
+        '409':
+          description: Email already registered
+
+  /login:
+    post:
+      summary: Authenticate user and issue JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful authentication
+        '401':
+          description: Invalid credentials
+
+  /users/me:
+    get:
+      summary: Get current authenticated user profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Current user profile
+        '401':
+          description: Unauthorized
+
+  /documents:
+    get:
+      summary: List user documents
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of documents
+    post:
+      summary: Upload legal PDF document
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Document uploaded and queued for processing
+        '400':
+          description: Invalid file type
+        '413':
+          description: File size exceeds 25MB
+
+  /documents/{id}:
+    get:
+      summary: Get document details and extracted text
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Document record
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+    delete:
+      summary: Delete document and its analyses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Document deleted
+
+  /analysis/{id}:
+    post:
+      summary: Initiate AI legal analysis for an extracted document
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Structured legal analysis initiated and generated successfully
+        '200':
+          description: Analysis already exists for this document (idempotent)
+        '403':
+          description: Forbidden - document not owned by caller
+        '404':
+          description: Document not found
+        '409':
+          description: Document extraction still in progress
+        '422':
+          description: Document extraction failed
+    get:
+      summary: Retrieve existing AI legal analysis
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Structured legal analysis result
+        '403':
+          description: Forbidden - document not owned by caller
+        '404':
+          description: Analysis not yet generated or document not found
+
+  /chat/{id}:
+    post:
+      summary: Query document in conversational chat
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question]
+              properties:
+                question:
+                  type: string
+      responses:
+        '200':
+          description: Grounded answer with citations
+
+  /health:
+    get:
+      summary: System health check
+      responses:
+        '200':
+          description: System operational
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
