@@ -28,8 +28,9 @@ export const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-navbar border-b border-navbar-border text-white transition-all w-full">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 h-20 md:h-[5.5rem] flex items-center justify-between gap-4">
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-navbar border-b border-navbar-border text-white transition-all w-full">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 h-20 md:h-[5.5rem] flex items-center justify-between gap-4">
         {/* Brand Logo */}
         <Link to="/" className="focus:outline-none shrink-0" title="NyayaSetu Home">
           <NyayaSetuLogo variant="dark" size="navbar" />
@@ -165,6 +166,9 @@ export const Navbar = () => {
           </div>
         </div>
       )}
-    </header>
+      </header>
+      {/* Spacer to preserve document flow and prevent content from being hidden underneath fixed navbar */}
+      <div className="h-20 md:h-[5.5rem] w-full shrink-0" aria-hidden="true" />
+    </>
   );
 };
