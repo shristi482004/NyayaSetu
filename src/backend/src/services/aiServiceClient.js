@@ -4,14 +4,97 @@ const logger = require('../config/logger');
 
 class AIServiceClient {
   constructor() {
+    this.cachedToken = null;
+    this.tokenExpiry = null;
+
     this.client = axios.create({
       baseURL: config.aiServiceUrl,
       timeout: 45000, // 45 seconds for heavy inference / OCR
       headers: {
-        'Content-Type': 'application/json',
-        'X-Internal-Key': config.aiInternalApiKey
+        'Content-Type': 'application/json'
       }
     });
+
+    // Request interceptor to attach authentication headers dynamically
+    this.client.interceptors.request.use(
+      async (reqConfig) => {
+        // Always attach internal service key
+        reqConfig.headers['X-Internal-Key'] = config.aiInternalApiKey;
+
+        // In Cloud Run environment or production remote target, attach Google IAM ID token
+        const idToken = await this.getIdToken();
+        if (idToken) {
+          reqConfig.headers['Authorization'] = `Bearer ${idToken}`;
+        }
+
+        return reqConfig;
+      },
+      (error) => Promise.reject(error)
+    );
+  }
+
+  /**
+   * Resolves Google-signed OIDC ID token from Cloud Run metadata server.
+   * Caches token in memory until expiration.
+   */
+  async getIdToken() {
+    const isCloudRun = !!process.env.K_SERVICE;
+    const isProduction = config.nodeEnv === 'production';
+    const isRemoteHttps = config.aiServiceUrl && config.aiServiceUrl.startsWith('https://');
+
+    // Only attempt IAM token retrieval in Cloud Run or production remote target
+    if (!isCloudRun && !isRemoteHttps) {
+      return null;
+    }
+
+    // Return cached token if valid (refreshing 60 seconds prior to expiry)
+    if (this.cachedToken && this.tokenExpiry && Date.now() < this.tokenExpiry - 60000) {
+      return this.cachedToken;
+    }
+
+    try {
+      const audience = config.aiServiceUrl.replace(/\/+$/, '');
+      const metadataUrl = `http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/identity?audience=${encodeURIComponent(audience)}`;
+
+      const res = await axios.get(metadataUrl, {
+        headers: { 'Metadata-Flavor': 'Google' },
+        timeout: 2500
+      });
+
+      const token = typeof res.data === 'string' ? res.data.trim() : String(res.data);
+      if (!token) {
+        throw new Error('Metadata server returned an empty identity token.');
+      }
+
+      this.cachedToken = token;
+      this.tokenExpiry = this._extractTokenExpiry(token);
+      return this.cachedToken;
+    } catch (err) {
+      logger.error(`Failed to acquire Google Cloud Run IAM ID token: ${err.message}`);
+      // In production on Cloud Run, never silently fall back to unauthenticated calls
+      if (isCloudRun || isProduction) {
+        const authErr = new Error(`Cloud Run IAM authentication failure for AI Service: ${err.message}`);
+        authErr.statusCode = 401;
+        authErr.isOperational = true;
+        throw authErr;
+      }
+      return null;
+    }
+  }
+
+  _extractTokenExpiry(token) {
+    try {
+      const parts = token.split('.');
+      if (parts.length === 3) {
+        const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf8'));
+        if (payload.exp) {
+          return payload.exp * 1000;
+        }
+      }
+    } catch (e) {
+      // Ignore parse failure; fallback below
+    }
+    return Date.now() + 50 * 60 * 1000; // 50 minutes fallback
   }
 
   /**

@@ -14,8 +14,12 @@ RUN npm run build
 # Stage 2: Serve using hardened Nginx Alpine
 FROM nginx:1.27-alpine
 
-# Copy custom Nginx reverse proxy configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Configure environment substitution to substitute ONLY BACKEND_SERVICE_URL
+ENV NGINX_ENVSUBST_FILTER="BACKEND_SERVICE_URL"
+ENV BACKEND_SERVICE_URL="http://backend:5000"
+
+# Copy custom Nginx reverse proxy configuration template into official templates directory
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 
 # Copy production build artifacts from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
