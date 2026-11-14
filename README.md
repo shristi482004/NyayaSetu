@@ -118,7 +118,8 @@ Understand important events and procedural developments through a chronological 
 
 Visualize procedural information through structured flowcharts.
 
-![Legal Flowchart](screenshots/flowchart.png)
+<img width="1468" height="915" alt="image" src="https://github.com/user-attachments/assets/26cbf139-7d3d-4ebe-8c2f-7219fae984dc" />
+
 
 ### 8. Document-Grounded Chat
 
@@ -131,7 +132,8 @@ Ask questions about an uploaded document and receive contextual answers with pag
 
 Access lawyer-oriented insights and argument mapping.
 
-![Lawyer Workspace](screenshots/lawyer-workspace.png)
+<img width="1468" height="915" alt="image" src="https://github.com/user-attachments/assets/8ab7ba46-3121-4cf8-9481-0ac83dce250a" />
+
 
 ---
 
